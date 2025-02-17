@@ -16,12 +16,14 @@
  defined ('ABSPATH') or die('Unauthorized Access');
  
  
- //create a shortcode
+ /** Create a shortcode to be used to get the balance **/ 
  add_shortcode('external_data', 'get_balance');
+
+/* Create a shortcode to make the bank payout request */
+ add_shortcode('bank_payout_request_form', 'bank_payout_request');
  
  
 //Function to create headers to be used for the transaction
-//  
  function create_headers($url, $data){
      error_log('DEBUG: In header function');
      
@@ -51,7 +53,7 @@
     return $headers_object;
  }
  
- 
+ /** Get balance function **/
  function get_balance(){
      error_log('Admin area loaded');
      
@@ -78,24 +80,6 @@
              )
          );
     
-
-// 	function wp_remote_retrieve_body( $response ) {
-// 	    error_log('DEBUG: Retrieving the response');
-	    
-// 	    if ( is_wp_error( $response ) || ! isset( $response['body'] ) ) {
-// 	        $error_message = $response->get_error_message();
-	 
-	        
-// 	        error_log("DEBUG: An error was received from the GET response");
-// 	        error_log(print_r($error_message, true));
-// 	        return [''];
-	        
-// 	    }
-// 	    else{
-// 	        return $response['body'];
-// 	    }
-	    
-//     }
     error_log('DEBUG: Retrieving the response');
     
     if (is_wp_error($response)) {
@@ -118,27 +102,6 @@
         //return $response_body;
         
         $results = json_decode($response_body, true);
-        //var_dump($results);
-        // $count = 0;
-        // if (is_array($results)) {
-        //     foreach ($results as $wallet) {
-        //         // Now $wallet is an individual JSON object (associative array
-        //         echo 'Wallet ID: ' . $wallet['walletId'] . "<br>";
-        //         echo 'Available: ' . $wallet['available'] . "<br>";
-        //         echo 'Hold: ' . $wallet['hold'] . "\n";
-        //         echo 'Total: ' . $wallet['total'] . "\n";
-        //         echo 'Currency: ' . $wallet['currency'] . "\n";
-        //         echo 'Message: ' . $wallet['message'] . "\n";
-        //         echo "--------------------\n"; // Separator for clarity
-        //         echo $count++;
-        //         }
-            
-        // } 
-        // else {
-        //     echo "Invalid JSON response";
-            
-        // }
-        // error_log("Results:". print_r($results, true));
         
         /** Display the balance data **/
         $html = '';
@@ -169,9 +132,6 @@
         $html .= '</table>';
         
         return $html;
-            
-        
-    
         
         
     }
@@ -179,5 +139,75 @@
     
 }
 
+ /** Bank Payout Processing Function **/    
+ function bank_payout_request(){
      
+    /**Get and Sanitize the Form data**/
+     
+     
+    /**Call the API**/
+     
+    /**Get the API response**/
+    
+    
+    
+    /**Display the API response **/
+    
+    /**Create the form**/
+    echo '
+    <form action="" method="POST">
+        <label id="notice">Fields with * are required </label>
+        <label for="accno">Bank Account Number *:</label>
+        <input type="text" id="accno" name="accno" required><br><br>
+
+        <label for="amount">Amount *:</label>
+        <input type="number" id="amount" name="amount" required><br><br>
+
+        <label for="currency">Currency *:</label>
+        <select name="currency">
+            <option value="">Select...</option>
+            <option value="KES">KES</option>
+            <option value="USD">USD</option>
+        </select>
+        
+        <label for="reason">Reason (Optional):</label>
+        <textarea id="reason" name="reason"></textarea><br><br>
+
+        <input type="submit" value="Submit">
+    </form>';
+   
+    echo '
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;  /* Ensures labels are on separate lines */
+            color: #333;
+        }
+        
+        input[type=text], input[type=number], input[type=password], textarea, input[type=email], select {
+            width: 70%;
+            height: 15px;
+        }
+        
+        #notice {
+            font-size: 13px;
+        }
+        
+  
+    </style>
+    
+    ' 
+    ;
+    
+   
+    
+    
  
+ }
